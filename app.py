@@ -75,22 +75,96 @@ if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
 def login_page():
-    st.markdown("<div class='title-glow'>🧬 Prostate Cancer Genomics Portal</div>", unsafe_allow_html=True)
-    st.markdown("<br>", unsafe_allow_html=True)
-    
-    with st.container():
-        st.markdown("<div class='login-box'>", unsafe_allow_html=True)
-        username = st.text_input("👩‍💻 Username")
-        password = st.text_input("🔐 Password", type="password")
-        if st.button("Login", use_container_width=True):
-            if username == "anshika2004" and password == "anshika2004":
-                st.session_state.authenticated = True
-                st.success("✅ Login successful!")
-                time.sleep(1)
-                st.experimental_rerun()
-            else:
-                st.error("❌ Invalid credentials!")
-        st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("""
+        <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .login-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 90vh;
+        }
+        .login-box {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 45px 50px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+            backdrop-filter: blur(20px);
+            max-width: 400px;
+            width: 100%;
+            transition: all 0.3s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .login-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.45);
+        }
+        .login-title {
+            text-align: center;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #cfcfcf;
+            font-size: 0.9rem;
+            margin-bottom: 35px;
+        }
+        .stTextInput > div > div > input {
+            background-color: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 10px;
+        }
+        .stTextInput > div > label {
+            color: #cfcfcf;
+            font-weight: 500;
+        }
+        .stButton button {
+            width: 100%;
+            background: linear-gradient(135deg, #0078D4, #005FA3);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s ease;
+        }
+        .stButton button:hover {
+            background: linear-gradient(135deg, #005FA3, #004E8F);
+            transform: translateY(-2px);
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.markdown("""
+        <div class="login-container">
+            <div class="login-box">
+                <div class="login-title">🔬 Prostate Cancer Genomics Portal</div>
+                <div class="subtitle">Secure access for authorized users</div>
+    """, unsafe_allow_html=True)
+
+    username = st.text_input("👤 Username")
+    password = st.text_input("🔒 Password", type="password")
+
+    if st.button("Sign In"):
+        if username == "anshika2004" and password == "anshika2004":
+            st.session_state.authenticated = True
+            st.success("Welcome back, Anshika!")
+            time.sleep(1)
+            st.experimental_rerun()
+        else:
+            st.error("Invalid credentials. Please try again.")
+
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
 
 # ===================================
 # 🧬 DASHBOARD MAIN
@@ -195,4 +269,5 @@ if not st.session_state.authenticated:
     login_page()
 else:
     dashboard()
+
 
