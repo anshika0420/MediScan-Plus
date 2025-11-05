@@ -31,7 +31,7 @@ if not os.path.exists("Prostate_Cancer_Genomics.csv"):
 # ============ LOAD DATA ============
 try:
     df = pd.read_csv("Prostate_Cancer_Genomics.csv", header=1)
-    st.success("Dataset loaded successfully!")
+    st.success("✅ Dataset loaded successfully!")
 except Exception as e:
     st.error(f"Error loading dataset: {e}")
     st.stop()
@@ -91,4 +91,3 @@ sns.heatmap(cm, annot=True, fmt='d', cmap="Blues", xticklabels=['Non-Cancer','Ca
 st.pyplot(fig_cm)
 
 st.success("✅ Dashboard ready! Scroll up to interact.")
-
