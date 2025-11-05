@@ -24,7 +24,8 @@ if "kaggle" in st.secrets:
 if not os.path.exists("Prostate_Cancer_Genomics.csv"):
     st.info("Downloading dataset from Kaggle (this may take a minute)...")
     os.system("kaggle datasets download -d sabetm/prostate-cancer-genomics -p .")
-    os.system("unzip -o prostate-cancer-genomics.zip -d .")
+    os.system("unzip -o prostate-cancer-genomics.zip -d data")
+    os.system("mv data/Prostate_Cancer_Genomics.csv ./Prostate_Cancer_Genomics.csv")
     st.success("Dataset downloaded successfully!")
 
 # ============ LOAD DATA ============
@@ -90,3 +91,4 @@ sns.heatmap(cm, annot=True, fmt='d', cmap="Blues", xticklabels=['Non-Cancer','Ca
 st.pyplot(fig_cm)
 
 st.success("✅ Dashboard ready! Scroll up to interact.")
+
