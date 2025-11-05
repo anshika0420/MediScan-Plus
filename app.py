@@ -177,7 +177,8 @@ def dashboard():
 
     elif page == "🚪 Logout":
         st.session_state.authenticated = False
-        st.experimental_rerun()
+        st.rerun()
+
 
 # ===================================
 # 🚀 RUN
@@ -186,3 +187,4 @@ if not st.session_state.authenticated:
     login_page()
 else:
     dashboard()
+
