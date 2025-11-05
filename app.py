@@ -83,7 +83,7 @@ def login_page():
         username = st.text_input("👩‍💻 Username")
         password = st.text_input("🔐 Password", type="password")
         if st.button("Login", use_container_width=True):
-            if username == "admin" and password == "genomics2025":
+            if username == "anshika2004" and password == "anshika2004":
                 st.session_state.authenticated = True
                 st.success("✅ Login successful!")
                 time.sleep(1)
@@ -195,3 +195,4 @@ if not st.session_state.authenticated:
     login_page()
 else:
     dashboard()
+
