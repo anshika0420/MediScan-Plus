@@ -1,5 +1,4 @@
 import streamlit as st
-import os
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
@@ -11,29 +10,21 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.express as px
 
+# ============ PAGE SETUP ============
 st.set_page_config(page_title="Prostate Cancer Genomics Dashboard", layout="wide")
 st.title("🧬 Prostate Cancer Genomics Dashboard")
 
-# ============ DOWNLOAD FROM KAGGLE ============
-# Load Kaggle API credentials from Streamlit Secrets
-if "kaggle" in st.secrets:
-    os.environ["KAGGLE_USERNAME"] = st.secrets["kaggle"]["username"]
-    os.environ["KAGGLE_KEY"] = st.secrets["kaggle"]["key"]
+# ============ LOAD DATA FROM GOOGLE DRIVE ============
+st.info("Loading dataset from Google Drive...")
 
-# If dataset not already downloaded, get it
-if not os.path.exists("Prostate_Cancer_Genomics.csv"):
-    st.info("Downloading dataset from Kaggle (this may take a minute)...")
-    os.system("kaggle datasets download -d sabetm/prostate-cancer-genomics -p .")
-    os.system("unzip -o prostate-cancer-genomics.zip -d data")
-    os.system("mv data/Prostate_Cancer_Genomics.csv ./Prostate_Cancer_Genomics.csv")
-    st.success("Dataset downloaded successfully!")
+# Direct download URL for your Drive file
+url = "https://drive.google.com/uc?id=1tP2QUPuCmW8Epauze60IBeFvBritvYy4"
 
-# ============ LOAD DATA ============
 try:
-    df = pd.read_csv("Prostate_Cancer_Genomics.csv", header=1)
+    df = pd.read_csv(url, header=1)
     st.success("✅ Dataset loaded successfully!")
 except Exception as e:
-    st.error(f"Error loading dataset: {e}")
+    st.error(f"❌ Error loading dataset: {e}")
     st.stop()
 
 # ============ PREPROCESS ============
@@ -59,7 +50,7 @@ merged = pd.merge(metadata, df_t, on='GSM_ID').dropna(subset=['Cancer_Status'])
 
 feature_cols = [c for c in merged.columns if c not in ['GSM_ID', 'Gillison_Class', 'Cancer_Status']]
 
-# ============ PCA ============
+# ============ PCA VISUALIZATION ============
 st.subheader("PCA Visualization")
 X = merged[feature_cols].astype(float).values
 scaler = StandardScaler()
@@ -70,12 +61,20 @@ X_pca = pca.fit_transform(X_scaled)
 pca_df = pd.DataFrame(X_pca, columns=['PC1', 'PC2'])
 pca_df['Cancer_Status'] = merged['Cancer_Status']
 
-fig = px.scatter(pca_df, x='PC1', y='PC2', color='Cancer_Status', title="PCA of Samples")
+fig = px.scatter(
+    pca_df, 
+    x='PC1', y='PC2', 
+    color='Cancer_Status', 
+    title="PCA of Prostate Cancer Samples",
+    template="plotly_white"
+)
 st.plotly_chart(fig, use_container_width=True)
 
-# ============ MODEL ============
+# ============ RANDOM FOREST MODEL ============
 st.subheader("Random Forest Model Performance")
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, merged['Cancer_Status'], test_size=0.2, random_state=42, stratify=merged['Cancer_Status'])
+X_train, X_test, y_train, y_test = train_test_split(
+    X_scaled, merged['Cancer_Status'], test_size=0.2, random_state=42, stratify=merged['Cancer_Status']
+)
 
 clf = RandomForestClassifier(n_estimators=100, random_state=42)
 clf.fit(X_train, y_train)
@@ -87,7 +86,11 @@ st.dataframe(pd.DataFrame(report).transpose())
 
 cm = confusion_matrix(y_test, y_pred, labels=['Non-Cancer', 'Cancer'])
 fig_cm, ax = plt.subplots()
-sns.heatmap(cm, annot=True, fmt='d', cmap="Blues", xticklabels=['Non-Cancer','Cancer'], yticklabels=['Non-Cancer','Cancer'], ax=ax)
+sns.heatmap(
+    cm, annot=True, fmt='d', cmap="Blues", 
+    xticklabels=['Non-Cancer','Cancer'], 
+    yticklabels=['Non-Cancer','Cancer'], ax=ax
+)
 st.pyplot(fig_cm)
 
 st.success("✅ Dashboard ready! Scroll up to interact.")
