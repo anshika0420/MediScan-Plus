@@ -23,7 +23,7 @@ from typing import Tuple
 # ------------------------------------------
 # Page & basic styling
 # ------------------------------------------
-st.set_page_config(page_title="🧬 Prostate Cancer Genomics Dashboard", layout="wide")
+st.set_page_config(page_title="🧬 Mediscan+", layout="wide")
 st.markdown("""
 <style>
 /* dark glass aesthetic */
@@ -448,5 +448,6 @@ if not st.session_state.authenticated:
     login_page()
 else:
     dashboard()
+
 
 
