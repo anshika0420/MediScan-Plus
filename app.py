@@ -158,7 +158,7 @@ if "authenticated" not in st.session_state:
 
 def login_page():
     st.markdown("<div class='glass' style='max-width:520px;margin:auto'>", unsafe_allow_html=True)
-    st.markdown("<h2 style='text-align:center;color:#E6F7FF;margin-bottom:4px'>🔬 Sleep Monitoring with Wearable Sensors</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align:center;color:#E6F7FF;margin-bottom:4px'>🔬MediScan+</h2>", unsafe_allow_html=True)
     st.markdown("<p style='text-align:center;color:#B6D7E8;margin-top:0;margin-bottom:14px'>Secure access — authorized users only</p>", unsafe_allow_html=True)
 
     username = st.text_input("Username", placeholder="Enter username")
@@ -178,7 +178,7 @@ def login_page():
 # MAIN DASHBOARD
 # ------------------------------------------
 def dashboard():
-    st.markdown("<div class='title'>🧬 Sleep Monitoring with Wearable Sensors</div>", unsafe_allow_html=True)
+    st.markdown("<div class='title'>🧬 MediScan+ Dashboard</div>", unsafe_allow_html=True)
     st.markdown("<div class='subtitle'>Professional | Robust | Reproducible</div>", unsafe_allow_html=True)
 
     st.sidebar.header("Workspace")
@@ -448,4 +448,5 @@ if not st.session_state.authenticated:
     login_page()
 else:
     dashboard()
+
 
